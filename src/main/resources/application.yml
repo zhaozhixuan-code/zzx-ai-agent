@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: zzx-ai-agent
+  profiles:
+    active: local
+  ai:
+    dashscope:
+      api-key: "${ai-agent.spring.ai.dashscope.api-key}"
+      chat:
+        options:
+          model: "${ai-agent.spring.ai.dashscope.chat-model}"
+
+# springdoc-openapi 接口文档配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.zzx.zzxaiagent.controller
+# knife4j 的增强配置，不需要可以去掉
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
