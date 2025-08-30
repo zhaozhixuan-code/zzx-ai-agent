@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzx.zzxaiagent.mapper.MessageMapper">
+
+    <insert id="insertAll">
+        insert into chat_message(conversation_id, message_type, content, properties) VALUES
+        <foreach collection="chatMessage" item="cm" separator=",">
+            (#{cm.conversationId},#{cm.messageType},#{cm.content},#{cm.properties})
+        </foreach>
+
+    </insert>
+
+    <!-- 根据会话ID查询消息 -->
+    <select id="findByConversationId" resultType="com.zzx.zzxaiagent.entity.po.ChatMessage">
+        SELECT * FROM chat_message
+        WHERE conversation_id = #{conversationId}
+        ORDER BY create_time DESC
+        <if test="lastN > 0">
+            LIMIT #{lastN}
+        </if>
+    </select>
+</mapper>

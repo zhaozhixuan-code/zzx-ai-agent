@@ -7,12 +7,29 @@ spring:
     name: zzx-ai-agent
   profiles:
     active: local
+  datasource:
+    one:
+      username: ${ai-agent.spring.datasource.one.username}
+      password: ${ai-agent.spring.datasource.one.password}
+      jdbc-url: jdbc:mysql://${ai-agent.spring.datasource.one.host}:${ai-agent.spring.datasource.one.port}/${ai-agent.spring.datasource.one.databases}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
   ai:
     dashscope:
       api-key: "${ai-agent.spring.ai.dashscope.api-key}"
       chat:
         options:
           model: "${ai-agent.spring.ai.dashscope.chat-model}"
+
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.zzx.zzxaiagent.entity.po
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
 
 # springdoc-openapi 接口文档配置
 springdoc:
@@ -31,3 +48,4 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
+

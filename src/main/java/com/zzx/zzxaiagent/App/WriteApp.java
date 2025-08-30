@@ -3,6 +3,7 @@ package com.zzx.zzxaiagent.App;
 import com.zzx.zzxaiagent.advisor.MyLoggerAdvisor;
 import com.zzx.zzxaiagent.advisor.ProhibitedWordAdvisor;
 import com.zzx.zzxaiagent.chatmemory.FileBasedChatMemory;
+import com.zzx.zzxaiagent.chatmemory.MysqlChatMemory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -29,14 +30,14 @@ public class WriteApp {
     // 系统提示词
     private final String SYSTEM_PROMPT;
 
-    public WriteApp(ChatModel dashscopeChatModel) {
+    public WriteApp(ChatModel dashscopeChatModel, MysqlChatMemory mysqlChatMemory) {
         // 加载系统prompt
         SystemPromptTemplate systemPrompt = new SystemPromptTemplate(new ClassPathResource("prompts/system-message.st"));
         Map<String, Object> variables = new HashMap<>();
         variables.put("name", "AI写作大师");
         this.SYSTEM_PROMPT = systemPrompt.render(variables);
 
-        // 初始化基于文件的对话记忆
+        /* // 初始化基于文件的对话记忆
         String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
         FileBasedChatMemory chatMemory = new FileBasedChatMemory(fileDir);
 
@@ -44,12 +45,12 @@ public class WriteApp {
         MessageWindowChatMemory InChatMemory = MessageWindowChatMemory.builder()
                 .chatMemoryRepository(new InMemoryChatMemoryRepository())
                 .maxMessages(20)
-                .build();
+                .build(); */
 
         chatClient = ChatClient.builder(dashscopeChatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(
-                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
+                        MessageChatMemoryAdvisor.builder(mysqlChatMemory).build(),
                         // 自定义日志拦截器
                         new MyLoggerAdvisor(),
                         // 注册违规词拦截器

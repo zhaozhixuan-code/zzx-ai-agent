@@ -26,7 +26,6 @@ class WriteAppTest {
         String s = writeApp.doChat(userPrompt, chatId);
         System.out.println(s);
 
-
     }
 
 
