@@ -46,12 +46,6 @@ public class ProhibitedWordAdvisor implements CallAdvisor, StreamAdvisor {
      * 检查文本中是否包含违规词
      *
      * @param text 输入文本
-     * @return 是否有违规词 true-有 false-无
-     */
-    /**
-     * 检查文本中是否包含违规词
-     *
-     * @param text 输入文本
      * @return 是否有违规词 true 有   false 无
      */
     private boolean checkProhibited(String text) {

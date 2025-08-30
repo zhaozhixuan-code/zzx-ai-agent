@@ -74,6 +74,18 @@
 			<artifactId>dashscope-sdk-java</artifactId>
 			<version>2.19.1</version>
 		</dependency>
+		<!-- 支持结构化输出 -->
+		<dependency>
+			<groupId>com.github.victools</groupId>
+			<artifactId>jsonschema-generator</artifactId>
+			<version>4.38.0</version>
+		</dependency>
+		<!-- 支持文件会话记忆持久化的序列化 -->
+		<dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>kryo</artifactId>
+			<version>5.6.2</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

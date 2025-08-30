@@ -30,5 +30,14 @@ class WriteAppTest {
     }
 
 
+    /**
+     * 结构化输出
+     */
+    @Test
+    void doChatWithReport() {
+        String userPrompt = "你好，我有写作需求";
+        String chatId = UUID.randomUUID().toString();
+        System.out.println(writeApp.doChatWithReport(userPrompt, chatId));
 
+    }
 }
