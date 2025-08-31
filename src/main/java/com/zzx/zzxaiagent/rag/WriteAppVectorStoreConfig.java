@@ -20,7 +20,7 @@ public class WriteAppVectorStoreConfig {
     private WriteAppDocumentLoader writeAppDocumentLoader;
 
     @Bean
-    VectorStore WriteAppVectorStore(EmbeddingModel dashScopeEmbeddingModel) {
+    VectorStore writeAppVectorStore(EmbeddingModel dashScopeEmbeddingModel) {
         SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(dashScopeEmbeddingModel).build();
         List<Document> documents = writeAppDocumentLoader.loadMarkdown();
         simpleVectorStore.add(documents);

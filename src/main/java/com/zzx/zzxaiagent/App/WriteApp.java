@@ -2,9 +2,12 @@ package com.zzx.zzxaiagent.App;
 
 import com.zzx.zzxaiagent.advisor.MyLoggerAdvisor;
 import com.zzx.zzxaiagent.advisor.ProhibitedWordAdvisor;
+import com.zzx.zzxaiagent.baidu.MyQueryTransformer;
 import com.zzx.zzxaiagent.chatmemory.FileBasedChatMemory;
 import com.zzx.zzxaiagent.chatmemory.MysqlChatMemory;
+import com.zzx.zzxaiagent.constants.TranslationConstants;
 import com.zzx.zzxaiagent.rag.QueryRewriter;
+import com.zzx.zzxaiagent.rag.WriteAppRagCustomAdvisorFactory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -33,7 +36,7 @@ public class WriteApp {
 
     // 本地知识库 + 内存向量存储
     @Resource
-    private VectorStore WriteAppVectorStore;
+    private VectorStore writeAppVectorStore;
 
     // 阿里云知识库
     @Resource
@@ -46,6 +49,9 @@ public class WriteApp {
     // 查询重写器
     @Resource
     private QueryRewriter queryRewriter;
+
+    @Resource
+    private MyQueryTransformer myQueryTransformer;
 
 
     // 客户端
@@ -140,6 +146,9 @@ public class WriteApp {
      */
     public String doChatWithRag(String message, String chatId) {
 
+        // 执行查询翻译器
+        message = myQueryTransformer.doQueryTranslation(message, TranslationConstants.ZH);
+
         // 执行查询重写器
         message = queryRewriter.doQueryRewrite(message);
 
@@ -148,18 +157,18 @@ public class WriteApp {
                 // 对话时动态设定拦截器参数，比如指定对话记忆的 id 和长度
                 .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, chatId))
                 // 使用本地知识配置
-                .advisors(new QuestionAnswerAdvisor(WriteAppVectorStore))
+                .advisors(new QuestionAnswerAdvisor(writeAppVectorStore))
                 // 使用 RAG 基于阿里云知识库
                 // .advisors(writeAppRagCloudAdvisor)
                 // 应用 RAG 基于 pgVector + 本地知识库
                 // .advisors(new QuestionAnswerAdvisor(pgVectorVectorStore))
                 // 应用自定义的 RAG 检索增强服务（文档查询器+上下文增强）
                 // .advisors(
-                //         LoveAppRagCustomAdvisorFactory.doCreate(
-                //                 loveAppVectorStore, "单身"
+                //         WriteAppRagCustomAdvisorFactory.doCreate(
+                //                 writeAppVectorStore, "日常"
                 //         )
-                // )
-                .user(message)
+                // // )
+                // .user(message)
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
