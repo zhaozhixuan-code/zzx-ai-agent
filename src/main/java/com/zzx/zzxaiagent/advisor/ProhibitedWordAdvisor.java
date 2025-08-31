@@ -96,8 +96,8 @@ public class ProhibitedWordAdvisor implements CallAdvisor, StreamAdvisor {
         // 最后一条用户消息内容
         String userText = lastUserMessage.getText();
         // 检查是否有违规词
-        boolean isProhibited = checkProhibited(userText);
-        handleProhibitedWords("用户请求", isProhibited);
+        /* boolean isProhibited = checkProhibited(userText);
+        handleProhibitedWords("用户请求", isProhibited); */
         return request;
     }
 

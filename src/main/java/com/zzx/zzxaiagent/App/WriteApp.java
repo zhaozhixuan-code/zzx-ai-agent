@@ -8,6 +8,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
@@ -32,6 +33,10 @@ public class WriteApp {
     // 本地知识库rag
     @Resource
     private VectorStore WriteAppVectorStore;
+
+    // 阿里云知识库
+    @Resource
+    private Advisor writeAppRagCloudAdvisor;
 
     // 客户端
     private final ChatClient chatClient;
@@ -114,8 +119,6 @@ public class WriteApp {
                 .entity(WriteReport.class);
         // String content = chatResponse.getResult().getOutput().getText();
 
-        log.info("writeReport:{}", writeReport);
-
         return writeReport;
     }
 
@@ -133,9 +136,9 @@ public class WriteApp {
                 // 对话时动态设定拦截器参数，比如指定对话记忆的 id 和长度
                 .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, chatId))
                 // 使用本地知识配置
-                .advisors(new QuestionAnswerAdvisor(WriteAppVectorStore))
+                // .advisors(new QuestionAnswerAdvisor(WriteAppVectorStore))
                 // 使用 RAG 基于阿里云知识库
-                // .advisors(loveAppRagCloudAdvisor)
+                .advisors(writeAppRagCloudAdvisor)
                 // 应用 RAG 基于pgVector
                 // .advisors(new QuestionAnswerAdvisor(pgVectorVectorStore))
                 // 应用自定义的 RAG 检索增强服务（文档查询器+上下文增强）
@@ -148,8 +151,6 @@ public class WriteApp {
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
-        log.info("content:{}", content);
-
         return content;
     }
 
