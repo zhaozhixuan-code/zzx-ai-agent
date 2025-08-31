@@ -86,6 +86,11 @@ public class ProhibitedWordAdvisor implements CallAdvisor, StreamAdvisor {
         }
     }
 
+    /**
+     * 处理用户的信息
+     * @param request
+     * @return
+     */
     private ChatClientRequest before(ChatClientRequest request) {
         UserMessage lastUserMessage = request.prompt().getUserMessage();
         // 最后一条用户消息内容
@@ -96,11 +101,15 @@ public class ProhibitedWordAdvisor implements CallAdvisor, StreamAdvisor {
         return request;
     }
 
+    /**
+     * 处理 AI 的回复信息
+     * @param chatClientResponse
+     */
     private void observeAfter(ChatClientResponse chatClientResponse) {
-        String AIText = chatClientResponse.chatResponse().getResult().getOutput().getText();
+        /* String AIText = chatClientResponse.chatResponse().getResult().getOutput().getText();
         // 检查是否有违规词
         boolean isProhibited = checkProhibited(AIText);
-        handleProhibitedWords("AI的回复", isProhibited);
+        handleProhibitedWords("AI的回复", isProhibited); */
     }
 
     @Override

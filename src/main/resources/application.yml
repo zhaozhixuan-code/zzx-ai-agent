@@ -26,9 +26,6 @@ mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.zzx.zzxaiagent.entity.po
-  configuration:
-    #开启驼峰命名
-    map-underscore-to-camel-case: true
 
 
 # springdoc-openapi 接口文档配置

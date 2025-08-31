@@ -34,9 +34,26 @@ class WriteAppTest {
      */
     @Test
     void doChatWithReport() {
+        String chatId = UUID.randomUUID().toString();
+        String userPrompt = "你好,我叫赵志轩";
+        System.out.println(writeApp.doChatWithReport(userPrompt, chatId));
+        System.out.println(writeApp.doChatWithReport("我叫什么来着？", chatId));
+
+
+
+    }
+
+    /**
+     * RAG
+     */
+    @Test
+    void doChatWithRag() {
         String userPrompt = "你好，我有写作需求";
         String chatId = UUID.randomUUID().toString();
-        System.out.println(writeApp.doChatWithReport(userPrompt, chatId));
+        System.out.println(writeApp.doChatWithRag(userPrompt, chatId));
+        System.out.println(writeApp.doChatWithRag("日记总是坚持不下来，或者写成流水账，怎么办？", chatId));
+
+
 
     }
 }

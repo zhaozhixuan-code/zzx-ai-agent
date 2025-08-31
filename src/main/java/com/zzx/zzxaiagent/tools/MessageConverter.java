@@ -22,7 +22,7 @@ public class MessageConverter {
     public static ChatMessage toChatMessage(Message message, String conversationId) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setConversationId(conversationId);
-        chatMessage.setMessageType(message.getMessageType()); // 设置消息类型（USER/ASSISTANT等）
+        chatMessage.setMessageType(String.valueOf(message.getMessageType())); // 设置消息类型（USER/ASSISTANT等）
         chatMessage.setContent(message.getText()); // 设置消息内容
 
         // 正确逻辑：只序列化metadata（元数据），而非整个Message对象
@@ -42,7 +42,7 @@ public class MessageConverter {
      */
     public static Message toMessage(ChatMessage chatMessage) {
         // 获取类型
-        MessageType messageType = chatMessage.getMessageType();
+        MessageType messageType = MessageType.valueOf(chatMessage.getMessageType());
         // 获取消息内容
         String content = chatMessage.getContent();
         // 获取元数据

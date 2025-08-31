@@ -22,7 +22,7 @@ public class ChatMessage implements Serializable {
 
     private String conversationId;   // 会话ID
 
-    private MessageType messageType;      // 消息类型
+    private String messageType;      // 消息类型
 
     private String content;          // 消息内容
 
