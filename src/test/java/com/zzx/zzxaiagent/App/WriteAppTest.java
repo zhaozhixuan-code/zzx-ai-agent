@@ -36,9 +36,6 @@ class WriteAppTest {
         String userPrompt = "你好,我叫赵志轩";
         System.out.println(writeApp.doChatWithReport(userPrompt, chatId));
         System.out.println(writeApp.doChatWithReport("我叫什么来着？", chatId));
-
-
-
     }
 
     /**

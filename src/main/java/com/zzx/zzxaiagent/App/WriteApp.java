@@ -4,6 +4,7 @@ import com.zzx.zzxaiagent.advisor.MyLoggerAdvisor;
 import com.zzx.zzxaiagent.advisor.ProhibitedWordAdvisor;
 import com.zzx.zzxaiagent.chatmemory.FileBasedChatMemory;
 import com.zzx.zzxaiagent.chatmemory.MysqlChatMemory;
+import com.zzx.zzxaiagent.rag.QueryRewriter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -30,7 +31,7 @@ import java.util.Vector;
 public class WriteApp {
 
 
-    // 本地知识库rag
+    // 本地知识库 + 内存向量存储
     @Resource
     private VectorStore WriteAppVectorStore;
 
@@ -38,12 +39,20 @@ public class WriteApp {
     @Resource
     private Advisor writeAppRagCloudAdvisor;
 
+    // 本地知识库 + pgVector向量存储
+    @Resource
+    private VectorStore pgVectorVectorStore;
+
+    // 查询重写器
+    @Resource
+    private QueryRewriter queryRewriter;
+
+
     // 客户端
     private final ChatClient chatClient;
 
     // 系统提示词
     private final String SYSTEM_PROMPT;
-
 
 
     public WriteApp(ChatModel dashscopeChatModel, MysqlChatMemory mysqlChatMemory) {
@@ -131,15 +140,18 @@ public class WriteApp {
      */
     public String doChatWithRag(String message, String chatId) {
 
+        // 执行查询重写器
+        message = queryRewriter.doQueryRewrite(message);
+
         ChatResponse chatResponse = chatClient
                 .prompt()
                 // 对话时动态设定拦截器参数，比如指定对话记忆的 id 和长度
                 .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, chatId))
                 // 使用本地知识配置
-                // .advisors(new QuestionAnswerAdvisor(WriteAppVectorStore))
+                .advisors(new QuestionAnswerAdvisor(WriteAppVectorStore))
                 // 使用 RAG 基于阿里云知识库
-                .advisors(writeAppRagCloudAdvisor)
-                // 应用 RAG 基于pgVector
+                // .advisors(writeAppRagCloudAdvisor)
+                // 应用 RAG 基于 pgVector + 本地知识库
                 // .advisors(new QuestionAnswerAdvisor(pgVectorVectorStore))
                 // 应用自定义的 RAG 检索增强服务（文档查询器+上下文增强）
                 // .advisors(

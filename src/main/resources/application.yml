@@ -8,11 +8,17 @@ spring:
   profiles:
     active: local
   datasource:
+    # MySql
     one:
       username: ${ai-agent.spring.datasource.one.username}
       password: ${ai-agent.spring.datasource.one.password}
       jdbc-url: jdbc:mysql://${ai-agent.spring.datasource.one.host}:${ai-agent.spring.datasource.one.port}/${ai-agent.spring.datasource.one.databases}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       driver-class-name: com.mysql.cj.jdbc.Driver
+    # PGVector
+    two:
+      jdbc-url: jdbc:postgresql://pgm-bp1plb4o54qd8dx0so.pg.rds.aliyuncs.com:5432/zzx_ai_agent
+      username: ${ai-agent.spring.datasource.two.username}
+      password: ${ai-agent.spring.datasource.two.password}
 
   ai:
     dashscope:
@@ -20,6 +26,12 @@ spring:
       chat:
         options:
           model: "${ai-agent.spring.ai.dashscope.chat-model}"
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+        max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
 
 
 mybatis:
