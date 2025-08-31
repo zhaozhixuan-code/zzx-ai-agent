@@ -17,13 +17,21 @@ import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgDistan
 import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgIndexType.HNSW;
 
 /**
- *  基于 pgVector 的向量存储
+ * 基于 pgVector 的向量存储
  */
 @Configuration
 public class PgVectorVectorStoreConfig {
     @Resource
     private WriteAppDocumentLoader AppDocumentLoader;
 
+
+    /**
+     * 存储 markdown 文件
+     *
+     * @param pgJdbcTemplate
+     * @param dashscopeEmbeddingModel
+     * @return
+     */
     @Bean
     public VectorStore pgVectorVectorStore(
             @Qualifier("pgJdbcTemplate") JdbcTemplate pgJdbcTemplate,

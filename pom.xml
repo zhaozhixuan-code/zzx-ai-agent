@@ -128,6 +128,12 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-pgvector-store</artifactId>
         </dependency>
+        <!--github的DocumentReader-->
+        <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>github-api</artifactId>
+            <version>1.318</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
