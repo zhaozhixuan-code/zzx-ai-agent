@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyQueryTransformer {
 
-    @Value("${ai-agent.baidu.api-key}")
+    @Value("${baidu.api-key}")
     private String APP_ID;
-    @Value("${ai-agent.baidu.security-key}")
+    @Value("${baidu.security-key}")
     private String SECURITY_KEY;
 
 

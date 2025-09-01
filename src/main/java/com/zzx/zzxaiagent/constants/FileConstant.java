@@ -1,9 +1,9 @@
 package com.zzx.zzxaiagent.constants;
 
-public interface FileConstant {
+public class FileConstant {
 
     /**
      * 文件保存目录
      */
-    String FILE_SAVE_DIR = System.getProperty("user.dir") + "/tmp";
+    public static final String FILE_SAVE_DIR = System.getProperty("user.dir") + "/tmp";
 }

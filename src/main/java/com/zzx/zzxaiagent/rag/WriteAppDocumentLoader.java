@@ -23,7 +23,7 @@ public class WriteAppDocumentLoader {
 
     private final Resource[] resource;
 
-    @Value("${ai-agent.github.token}")
+    @Value("${github.token}")
     private String gitHubToken;
 
     WriteAppDocumentLoader(@Value("classpath:document/*.md") Resource[] resource) {

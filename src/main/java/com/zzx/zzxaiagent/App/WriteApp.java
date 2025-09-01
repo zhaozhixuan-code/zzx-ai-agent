@@ -20,6 +20,7 @@ import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -50,8 +51,13 @@ public class WriteApp {
     @Resource
     private QueryRewriter queryRewriter;
 
+    // 查询翻译器
     @Resource
     private MyQueryTransformer myQueryTransformer;
+
+    // 工具注入
+    @Resource
+    private ToolCallback[] allTools;
 
 
     // 客户端
@@ -175,4 +181,20 @@ public class WriteApp {
         return content;
     }
 
+
+
+
+    public String doChatWithTools(String message, String chatId) {
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, chatId))
+                .toolCallbacks(allTools)
+                .user(message)
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        log.info("content:{}", content);
+
+        return content;
+    }
 }
