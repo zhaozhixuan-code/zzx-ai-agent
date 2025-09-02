@@ -79,4 +79,15 @@ class WriteAppTest {
         String answer = writeApp.doChatWithTools(message, chatId);
         System.out.println(answer);
     }
+
+    /**
+     * MCP调用
+     */
+    @Test
+    void doChatWithMcp() {
+        String chatId = UUID.randomUUID().toString();
+        String message = "搜索2020年4月的财经新闻";
+        String string = writeApp.doChatWithMcp(message, chatId);
+        System.out.println(string);
+    }
 }

@@ -21,6 +21,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.tool.ToolCallback;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -89,9 +90,9 @@ public class WriteApp {
                 .defaultAdvisors(
                         MessageChatMemoryAdvisor.builder(mysqlChatMemory).build(),
                         // 自定义日志拦截器
-                        new MyLoggerAdvisor(),
+                        new MyLoggerAdvisor()
                         // 注册违规词拦截器
-                        new ProhibitedWordAdvisor()
+                        // new ProhibitedWordAdvisor()
                         /* ,
                         // Re2拦截器
                         new ReReadingAdvisor() */
@@ -181,9 +182,13 @@ public class WriteApp {
         return content;
     }
 
-
-
-
+    /**
+     * 调用工具
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
     public String doChatWithTools(String message, String chatId) {
         ChatResponse chatResponse = chatClient
                 .prompt()
@@ -193,7 +198,30 @@ public class WriteApp {
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
-        log.info("content:{}", content);
+
+        return content;
+    }
+
+
+    @Resource
+    private ToolCallbackProvider toolCallbackProvider;
+
+    /**
+     * 调用MCP
+     *
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String doChatWithMcp(String message, String chatId) {
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, chatId))
+                .toolCallbacks(toolCallbackProvider)
+                .user(message)
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
 
         return content;
     }

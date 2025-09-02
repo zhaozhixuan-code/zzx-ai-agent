@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8126
   servlet:
     context-path: /api
 spring:
@@ -32,6 +32,15 @@ spring:
         dimensions: 1536
         distance-type: COSINE_DISTANCE
         max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:mcp-servers.json
+#        sse:
+#          connections:
+#            server1:
+#              url: http://localhost:8127
+
 
   # 用于邮件发送 此处使用QQ邮箱
   mail:

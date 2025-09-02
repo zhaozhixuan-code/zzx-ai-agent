@@ -1,0 +1,11 @@
+# 主配置类
+spring:
+  application:
+    name: zzx-search-mcp-server
+  profiles:
+    active: stdio
+server:
+  port: 8127
+
+zhi:
+  api-key: 2010a8a305be489e88337cbb51e0f2ce.WPvrJaTi6riiSoqH
