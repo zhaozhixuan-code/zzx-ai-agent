@@ -19,7 +19,7 @@ import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgIndexT
 /**
  * 基于 pgVector 的向量存储
  */
-@Configuration
+// @Configuration
 public class PgVectorVectorStoreConfig {
     @Resource
     private WriteAppDocumentLoader AppDocumentLoader;

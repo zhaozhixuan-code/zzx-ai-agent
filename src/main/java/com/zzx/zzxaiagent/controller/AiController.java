@@ -4,10 +4,12 @@ import com.zzx.zzxaiagent.App.WriteApp;
 import com.zzx.zzxaiagent.agent.ZzxManus;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Flux;
@@ -22,9 +24,8 @@ public class AiController {
     @Resource
     private WriteApp writeApp;
 
-    // 超级智能体
     @Resource
-    private ZzxManus zzxManus;
+    private ToolCallback[] allTools;
 
     @Resource
     private ChatModel dashscopeChatModel;
@@ -52,11 +53,12 @@ public class AiController {
      * @return AI 的返回
      */
     @GetMapping(value = "/write_app/chat/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> doChatWithWriteAppSSE(String message, String chatId) {
+    public Flux<String> doChatWithWriteAppSSE(
+            @RequestParam("message") String message,
+            @RequestParam("chatId") String chatId) {
 
-        Flux<String> stringFlux = writeApp.doChatByStream(message, chatId);
-
-        return stringFlux;
+        System.out.println(">>> 收到 message = [" + message + "], chatId = [" + chatId + "]");
+        return writeApp.doChatByStream(message, chatId);
     }
 
     @GetMapping("/write_app/chat/sse/server_sent_event")
@@ -87,5 +89,11 @@ public class AiController {
         return sseEmitter;
     }
 
+    @GetMapping("/manus")
+    public SseEmitter ZzxManus(String message){
+        ZzxManus manus = new ZzxManus(allTools, dashscopeChatModel);
+        SseEmitter sseEmitter = manus.runStream(message);
+        return sseEmitter;
+    }
 
 }

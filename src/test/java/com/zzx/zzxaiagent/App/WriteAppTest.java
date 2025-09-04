@@ -24,7 +24,7 @@ class WriteAppTest {
     void doChat() {
         String chatId = UUID.randomUUID().toString();
         System.out.println(writeApp.doChat("你好,我叫赵志轩", chatId));
-        System.out.println(writeApp.doChat("我叫什么来着？", chatId));
+        // System.out.println(writeApp.doChat("我叫什么来着？", chatId));
     }
 
 
