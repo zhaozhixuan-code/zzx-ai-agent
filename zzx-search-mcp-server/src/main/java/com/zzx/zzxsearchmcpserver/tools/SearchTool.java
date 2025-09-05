@@ -27,7 +27,7 @@ public class SearchTool {
      * @param query
      * @return
      */
-    @Tool(description = "search images from web")
+    @Tool(description = "search  from web")
     public String search(@ToolParam(description = "search query keyword") String query) {
         // 创建客户端
         ZhipuAiClient client = ZhipuAiClient.builder().apiKey(api_key).build();

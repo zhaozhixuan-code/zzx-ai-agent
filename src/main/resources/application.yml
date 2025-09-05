@@ -6,7 +6,7 @@ spring:
   application:
     name: zzx-ai-agent
   profiles:
-    active: local
+    active: pro
   datasource:
     # MySql
     one:
@@ -32,10 +32,10 @@ spring:
         dimensions: 1536
         distance-type: COSINE_DISTANCE
         max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
-    mcp:
-      client:
-        stdio:
-          servers-configuration: classpath:mcp-servers.json
+#    mcp:
+#      client:
+#        stdio:
+#          servers-configuration: classpath:mcp-servers.json
 #        sse:
 #          connections:
 #            server1:

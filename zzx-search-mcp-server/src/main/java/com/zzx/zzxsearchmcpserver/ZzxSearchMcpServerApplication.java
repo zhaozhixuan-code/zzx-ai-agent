@@ -13,10 +13,10 @@ public class ZzxSearchMcpServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ZzxSearchMcpServerApplication.class, args);
     }
-    @Bean
+/*     @Bean
     public ToolCallbackProvider imageSearchTools(SearchTool tool) {
         return MethodToolCallbackProvider.builder()
                 .toolObjects(tool)
                 .build();
-    }
+    } */
 }

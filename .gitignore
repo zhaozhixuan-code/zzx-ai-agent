@@ -1,5 +1,6 @@
 ### CUSTOM ###
 application-local.yml
+application-pro.yml
 tmp
 
 HELP.md
